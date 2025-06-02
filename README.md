@@ -49,32 +49,67 @@ cd tower-defense-oop
 pip install -r requirements.txt
 
 
-tower_defense_game/
-├── main.py                 # 主程式入口
-├── game/
+tower-defense-oop/
+├── README.md                   # 專案說明文檔
+├── requirements.txt            # Python套件需求
+├── .gitignore                 # Git忽略檔案
+├── main.py                    # 主程式入口
+├── docs/                      # 文檔資料夾
+│   ├── README.md
+│   ├── gameplay.md            # 遊戲玩法說明
+│   ├── oop_design.md          # OOP設計說明
+│   └── images/                # 文檔用圖片
+├── src/                       # 原始碼資料夾
 │   ├── __init__.py
-│   ├── game_manager.py     # 遊戲主控制器
-│   ├── map.py             # 地圖系統
-│   └── ui.py              # 使用者介面
-├── entities/
-│   ├── __init__.py
-│   ├── base_entity.py     # 基礎實體類別
-│   ├── tower.py           # 塔類別系統
-│   ├── enemy.py           # 敵人類別系統
-│   └── projectile.py      # 子彈/投射物系統
-├── utils/
-│   ├── __init__.py
-│   ├── constants.py       # 遊戲常數
-│   ├── helpers.py         # 輔助函數
-│   └── animation.py       # 動畫處理
-├── assets/
+│   ├── game/                  # 遊戲核心模組
+│   │   ├── __init__.py
+│   │   ├── game_manager.py    # 遊戲管理器
+│   │   ├── map_manager.py     # 地圖管理
+│   │   └── wave_manager.py    # 波數管理
+│   ├── entities/              # 遊戲實體模組
+│   │   ├── __init__.py
+│   │   ├── base_entity.py     # 基礎實體類別
+│   │   ├── towers/            # 塔類別模組
+│   │   │   ├── __init__.py
+│   │   │   ├── base_tower.py  # 塔基礎類別
+│   │   │   ├── cannon_tower.py
+│   │   │   ├── machine_tower.py
+│   │   │   └── freeze_tower.py
+│   │   ├── enemies/           # 敵人類別模組
+│   │   │   ├── __init__.py
+│   │   │   ├── base_enemy.py  # 敵人基礎類別
+│   │   │   ├── basic_enemy.py
+│   │   │   ├── fast_enemy.py
+│   │   │   └── tank_enemy.py
+│   │   └── projectiles/       # 投射物類別模組
+│   │       ├── __init__.py
+│   │       ├── base_projectile.py
+│   │       ├── cannon_ball.py
+│   │       ├── bullet.py
+│   │       └── ice_ball.py
+│   ├── ui/                    # 使用者介面模組
+│   │   ├── __init__.py
+│   │   ├── game_ui.py         # 遊戲UI
+│   │   └── menu.py            # 選單系統
+│   └── utils/                 # 工具模組
+│       ├── __init__.py
+│       ├── constants.py       # 常數定義
+│       ├── helpers.py         # 輔助函數
+│       └── animation.py       # 動畫處理
+├── assets/                    # 遊戲資源
 │   ├── images/
-│   │   ├── towers/        # 塔的圖片
-│   │   ├── enemies/       # 敵人圖片
-│   │   ├── projectiles/   # 子彈圖片
-│   │   ├── map/           # 地圖素材
-│   │   └── ui/           # UI元素
-│   └── sounds/           # 音效檔案
-├── levels/
-│   └── level_data.py     # 關卡資料
-└── requirements.txt      # 套件需求
+│   │   ├── towers/
+│   │   ├── enemies/
+│   │   ├── projectiles/
+│   │   ├── map/
+│   │   └── ui/
+│   └── sounds/
+├── tests/                     # 測試檔案
+│   ├── __init__.py
+│   ├── test_towers.py
+│   ├── test_enemies.py
+│   └── test_game_logic.py
+└── screenshots/               # 遊戲截圖
+    ├── gameplay1.png
+    ├── gameplay2.png
+    └── demo.gif
