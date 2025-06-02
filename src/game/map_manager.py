@@ -371,4 +371,42 @@ class MapManager:
         
         Args:
             grid_x (int): 格子X座標
-            grid_y
+            grid_y (int): 格子Y座標
+            
+        Returns:
+            Tuple[int, int]: 像素座標 (x, y)
+        """
+        pixel_x = grid_x * self.tile_size + self.tile_size // 2
+        pixel_y = grid_y * self.tile_size + self.tile_size // 2
+        return (pixel_x, pixel_y)
+    
+    def get_tile_type(self, pixel_x: int, pixel_y: int) -> TileType:
+        """
+        獲取指定像素座標的格子類型
+        
+        Args:
+            pixel_x (int): 像素X座標
+            pixel_y (int): 像素Y座標
+            
+        Returns:
+            TileType: 格子類型
+        """
+        grid_x, grid_y = self.pixel_to_grid(pixel_x, pixel_y)
+        
+        if (grid_x < 0 or grid_x >= self.map_width or 
+            grid_y < 0 or grid_y >= self.map_height):
+            return TileType.BLOCKED
+        
+        return TileType(self.map_data[grid_y][grid_x])
+    
+    def render(self, screen: pygame.Surface, offset_x: int = 0, offset_y: int = 0) -> None:
+        """
+        渲染地圖到螢幕
+        
+        Args:
+            screen (pygame.Surface): 目標渲染表面
+            offset_x (int): X軸偏移量
+            offset_y (int): Y軸偏移量
+        """
+        if self.map_surface:
+            screen.blit(self.map_surface, (offset_x, offset_y))
