@@ -1,101 +1,60 @@
-"""
-塔基礎類別
-所有塔的父類別，展示繼承概念
-"""
-import time
+import pygame
 from src.entities.base_entity import BaseEntity
+from src.utils.constants import TILE_SIZE
 
 class BaseTower(BaseEntity):
-    """塔的基礎類別"""
-    
-    def __init__(self, x, y, tower_type):
-        """
-        初始化塔
-        
-        Args:
-            x (float): X座標
-            y (float): Y座標  
-            tower_type (str): 塔類型
-        """
-        super().__init__(x, y)
-        from src.utils.constants import TOWER_STATS, TOWER_COST
-        
-        stats = TOWER_STATS[tower_type]
-        self._damage = stats['damage']
-        self._range = stats['range']
-        self._attack_speed = stats['attack_speed']
-        self._cost = TOWER_COST[tower_type]
-        
-        self._target = None
-        self._last_attack_time = 0
-        self._tower_type = tower_type
-    
-    @property
-    def range(self):
-        """獲取射程"""
-        return self._range
-    
-    @property
-    def cost(self):
-        """獲取建造成本"""
-        return self._cost
-    
-    @property
-    def target(self):
-        """獲取目標"""
-        return self._target
-    
-    def find_target(self, enemies):
-        """
-        尋找射程內的敵人目標
-        
-        Args:
-            enemies (list): 敵人列表
-        """
-        self._target = None
-        min_distance = float('inf')
-        
-        for enemy in enemies:
-            if enemy.alive:
-                distance = self.distance_to(enemy)
-                if distance <= self._range and distance < min_distance:
-                    self._target = enemy
-                    min_distance = distance
-    
-    def can_attack(self):
-        """檢查是否可以攻擊"""
-        current_time = time.time()
-        return (current_time - self._last_attack_time) >= (1.0 / self._attack_speed)
-    
-    def attack(self):
-        """
-        攻擊目標
-        
-        Returns:
-            Projectile: 產生的投射物，如果無法攻擊則返回None
-        """
-        if self._target and self._target.alive and self.can_attack():
-            self._last_attack_time = time.time()
-            return self._create_projectile()
-        return None
-    
-    @abstractmethod
-    def _create_projectile(self):
-        """
-        創建投射物（多型應用點）
-        子類別必須實作此方法
-        
-        Returns:
-            Projectile: 對應的投射物
-        """
-        pass
-    
+    name = "BaseTower"
+    cost = 50
+    range = 100
+    attack_speed = 1.0  # seconds
+    damage = 10
+    max_level = 5
+    upgrade_cost_base = 40
+    upgrade_damage = 8
+    upgrade_attack_speed = 0.12  # 每級攻速提升（秒變短）
+
+    def __init__(self, x, y, game_manager):
+        image = pygame.Surface((TILE_SIZE, TILE_SIZE), pygame.SRCALPHA)
+        pygame.draw.circle(image, (120, 120, 120), (TILE_SIZE//2, TILE_SIZE//2), TILE_SIZE//2)
+        super().__init__(x, y, image)
+        self.game_manager = game_manager
+        self.attack_cooldown = 0
+        self.level = 1
+
     def update(self, dt):
-        """更新塔狀態"""
-        # 基礎塔類別的更新邏輯
-        pass
-    
-    @abstractmethod
-    def draw(self, screen):
-        """繪製塔（子類別實作具體樣式）"""
-        pass
+        self.attack_cooldown -= dt
+        if self.attack_cooldown <= 0:
+            target = self.find_target()
+            if target:
+                self.shoot(target)
+                self.attack_cooldown = self.attack_speed
+
+    def find_target(self):
+        for enemy in self.game_manager.enemies:
+            if self.distance_to(enemy) <= self.range:
+                return enemy
+        return None
+
+    def shoot(self, target):
+        pass  # 子類覆寫
+
+    def distance_to(self, entity):
+        dx = self.x - entity.x
+        dy = self.y - entity.y
+        return (dx*dx + dy*dy) ** 0.5
+
+    def can_upgrade(self):
+        return self.level < self.max_level
+
+    def upgrade_cost(self):
+        return self.upgrade_cost_base * self.level  # 可依需求調整
+
+    def upgrade(self):
+        if self.can_upgrade() and self.game_manager.money >= self.upgrade_cost():
+            self.game_manager.money -= self.upgrade_cost()
+            self.level += 1
+            self.damage += self.upgrade_damage
+            self.attack_speed = max(0.1, self.attack_speed - self.upgrade_attack_speed)
+            # 可增加升級動畫或音效
+            return True
+        return False

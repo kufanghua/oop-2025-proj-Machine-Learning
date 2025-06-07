@@ -1,184 +1,83 @@
-# src/entities/enemies/base_enemy.py
-"""
-敵人的基礎類別
-定義所有敵人的共同屬性和方法
-"""
-
-from abc import ABC, abstractmethod
-from enum import Enum
 import pygame
-from ..base_entity import BaseEntity
-from ...utils.constants import ENEMY_SETTINGS
+from src.entities.base_entity import BaseEntity
 
-class EnemyType(Enum):
-    """敵人類型枚舉"""
-    BASIC = "basic"
-    FAST = "fast"
-    TANK = "tank"
+TILE_SIZE = 40  # 若有 constants.py，請改用 from src.utils.constants import TILE_SIZE
 
-class BaseEnemy(BaseEntity, ABC):
-    """敵人的基礎類別"""
-    
-    def __init__(self, path_points, enemy_type):
-        # 從路徑的第一個點開始
-        start_x, start_y = path_points[0] if path_points else (0, 0)
-        super().__init__(start_x, start_y)
-        
-        self._enemy_type = enemy_type
-        self._path_points = path_points
-        self._current_path_index = 0
-        
-        # 從常數設定中獲取屬性
-        settings = ENEMY_SETTINGS[enemy_type.value]
-        self._max_health = settings['health']
-        self._current_health = self._max_health
-        self._speed = settings['speed']
-        self._reward = settings['reward']
-        self._color = settings['color']
-        
-        # 狀態屬性
-        self._is_alive = True
-        self._reached_end = False
-        self._slow_effect = 1.0  # 減速效果倍數
-        self._slow_duration = 0  # 減速持續時間
-        
-        # 視覺屬性
-        self._size = 15
-        
-        # 移動相關
-        self._target_point = None
-        self._set_next_target()
-    
-    @property
-    def enemy_type(self):
-        """獲取敵人類型"""
-        return self._enemy_type
-    
-    @property
-    def current_health(self):
-        """獲取當前血量"""
-        return self._current_health
-    
-    @property
-    def max_health(self):
-        """獲取最大血量"""
-        return self._max_health
-    
-    @property
-    def speed(self):
-        """獲取速度"""
-        return self._speed * self._slow_effect
-    
-    @property
-    def reward(self):
-        """獲取擊殺獎勵"""
-        return self._reward
-    
-    @property
-    def is_alive(self):
-        """檢查是否存活"""
-        return self._is_alive
-    
-    @property
-    def reached_end(self):
-        """檢查是否到達終點"""
-        return self._reached_end
-    
-    def _set_next_target(self):
-        """設置下一個目標點"""
-        if self._current_path_index < len(self._path_points):
-            self._target_point = self._path_points[self._current_path_index]
-        else:
-            self._target_point = None
-            self._reached_end = True
-    
-    def take_damage(self, damage):
-        """受到傷害"""
-        self._current_health -= damage
-        if self._current_health <= 0:
-            self._current_health = 0
-            self._is_alive = False
-    
-    def apply_slow_effect(self, slow_factor, duration):
-        """應用減速效果"""
-        self._slow_effect = min(self._slow_effect, slow_factor)
-        self._slow_duration = max(self._slow_duration, duration)
-    
-    def heal(self, amount):
-        """治療"""
-        self._current_health = min(self._current_health + amount, self._max_health)
-    
-    def get_health_percentage(self):
-        """獲取血量百分比"""
-        return self._current_health / self._max_health
-    
-    def move_towards_target(self, dt):
-        """朝目標點移動"""
-        if not self._target_point or not self._is_alive:
-            return
-        
-        # 計算到目標點的距離
-        dx = self._target_point[0] - self.x
-        dy = self._target_point[1] - self.y
-        distance = (dx*dx + dy*dy)**0.5
-        
-        if distance < 5:  # 到達目標點
-            self._current_path_index += 1
-            self._set_next_target()
-        else:
-            # 移動朝向目標點
-            move_distance = self.speed * dt / 16.67  # 假設60FPS
-            if distance > 0:
-                self.x += (dx / distance) * move_distance
-                self.y += (dy / distance) * move_distance
-    
+class BaseEnemy(BaseEntity):
+    name = "BaseEnemy"
+    speed = 60  # pix/sec
+    hp_default = 30
+    reward = 10
+
+    def __init__(self, start_tile, game_manager):
+        x = start_tile[1] * TILE_SIZE + TILE_SIZE // 2
+        y = start_tile[0] * TILE_SIZE + TILE_SIZE // 2
+        image = pygame.Surface((TILE_SIZE - 6, TILE_SIZE - 6), pygame.SRCALPHA)
+        pygame.draw.circle(
+            image,
+            (180, 80, 80),
+            ((TILE_SIZE - 6) // 2, (TILE_SIZE - 6) // 2),
+            (TILE_SIZE - 6) // 2
+        )
+        super().__init__(x, y, image, self.hp_default)
+        self.game_manager = game_manager
+        self.path = list(game_manager.map_manager.path_tiles) if hasattr(game_manager, "map_manager") else []
+        self.target_idx = 0
+        self.slow_timer = 0
+
     def update(self, dt):
-        """更新敵人狀態"""
-        if not self._is_alive:
+        if self.slow_timer > 0:
+            move_speed = self.speed * 0.4
+            self.slow_timer -= dt
+        else:
+            move_speed = self.speed
+        if self.target_idx >= len(self.path):
             return
-        
-        # 更新減速效果
-        if self._slow_duration > 0:
-            self._slow_duration -= dt
-            if self._slow_duration <= 0:
-                self._slow_effect = 1.0
-        
-        # 移動
-        self.move_towards_target(dt)
-    
-    def draw(self, screen):
-        """繪製敵人"""
-        if not self._is_alive:
-            return
-        
-        # 繪製敵人本體
-        pygame.draw.circle(screen, self._color, (int(self.x), int(self.y)), self._size)
-        
-        # 繪製血條
-        self._draw_health_bar(screen)
-        
-        # 如果有減速效果，繪製冰霜效果
-        if self._slow_effect < 1.0:
-            pygame.draw.circle(screen, (173, 216, 230), 
-                             (int(self.x), int(self.y)), self._size, 2)
-    
-    def _draw_health_bar(self, screen):
-        """繪製血條"""
-        bar_width = 30
-        bar_height = 5
-        bar_x = self.x - bar_width // 2
-        bar_y = self.y - self._size - 10
-        
-        # 背景
-        pygame.draw.rect(screen, (255, 0, 0), 
-                        (bar_x, bar_y, bar_width, bar_height))
-        
-        # 血量
-        health_width = bar_width * self.get_health_percentage()
-        pygame.draw.rect(screen, (0, 255, 0), 
-                        (bar_x, bar_y, health_width, bar_height))
-    
-    @abstractmethod
-    def get_special_ability(self):
-        """獲取特殊能力（抽象方法，由子類實現）"""
-        pass
+        target_tile = self.path[self.target_idx]
+        target_x = target_tile[1] * TILE_SIZE + TILE_SIZE // 2
+        target_y = target_tile[0] * TILE_SIZE + TILE_SIZE // 2
+        dx, dy = target_x - self.x, target_y - self.y
+        dist = (dx * dx + dy * dy) ** 0.5
+        if dist < move_speed * dt:
+            self.x, self.y = target_x, target_y
+            self.target_idx += 1
+        else:
+            self.x += dx / dist * move_speed * dt
+            self.y += dy / dist * move_speed * dt
+        self.rect.center = (self.x, self.y)
+
+    def get_hp_percent(self):
+        return self.hp / self.max_hp if self.max_hp > 0 else 0
+
+    def draw(self, surface):
+        # 畫敵人本體
+        surface.blit(self.image, self.rect.topleft)
+        # 血條座標與尺寸
+        bar_width = self.rect.width
+        bar_height = 7
+        bar_x = self.rect.x
+        bar_y = self.rect.y - 12
+
+        # 血條底
+        pygame.draw.rect(surface, (100, 100, 100), (bar_x, bar_y, bar_width, bar_height))
+        # 血條現值
+        percent = max(0, self.hp / self.max_hp)
+        pygame.draw.rect(surface, (220, 30, 30), (bar_x, bar_y, int(bar_width * percent), bar_height))
+
+        # 顯示百分比數字
+        font = pygame.font.SysFont("Arial", 12)
+        percent_txt = font.render(f"{int(percent * 100)}%", True, (255, 255, 255))
+        txt_rect = percent_txt.get_rect(center=(self.rect.centerx, bar_y + bar_height // 2))
+        surface.blit(percent_txt, txt_rect)
+
+    def take_damage(self, dmg):
+        super().take_damage(dmg)
+        if self.hp <= 0 and hasattr(self.game_manager, "earn_money"):
+            self.game_manager.earn_money(self.reward)
+            self.game_manager.add_score(self.reward)
+
+    def slow(self, t):
+        self.slow_timer = max(self.slow_timer, t)
+
+    def get_map_grid_pos(self):
+        return (int(self.y) // TILE_SIZE, int(self.x) // TILE_SIZE)

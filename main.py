@@ -1,26 +1,50 @@
-"""
-塔防遊戲主程式
-NYCU OOP Final Project - Tower Defense Game
-"""
-import pygame
 import sys
+import os
+
+# Add src to sys.path for easy imports
+SRC_PATH = os.path.join(os.path.dirname(__file__), "src")
+if SRC_PATH not in sys.path:
+    sys.path.insert(0, SRC_PATH)
+
+import pygame
 from src.game.game_manager import GameManager
-from src.utils.constants import SCREEN_WIDTH, SCREEN_HEIGHT, FPS
+from src.ui.menu import MainMenu
+from src.utils.constants import TILE_SIZE, FPS
 
 def main():
-    """主程式入口函數"""
     pygame.init()
+    # 先用小視窗建立 Menu 畫面
+    dummy_screen = pygame.display.set_mode((400, 300))
+    menu = MainMenu(dummy_screen)
+    difficulty, map_size = menu.run()  # map_size 是 (rows, cols)
+    rows, cols = map_size
+
+    # 根據地圖大小動態調整視窗大小
+    SCREEN_WIDTH = cols * TILE_SIZE
+    SCREEN_HEIGHT = rows * TILE_SIZE
+
+    # 重新建立遊戲主視窗
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-    pygame.display.set_caption("Tower Defense - OOP Project")
-    
-    try:
-        game_manager = GameManager()
-        game_manager.run(screen)
-    except Exception as e:
-        print(f"遊戲執行錯誤: {e}")
-    finally:
-        pygame.quit()
-        sys.exit()
+    pygame.display.set_caption("Tower Defense OOP Project")
+    clock = pygame.time.Clock()
+
+    # 遊戲主迴圈
+    game_manager = GameManager(screen, map_size=map_size, difficulty=difficulty)
+    running = True
+    while running:
+        dt = clock.tick(FPS) / 1000  # 秒
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            game_manager.handle_event(event)
+        game_manager.update(dt)
+        game_manager.draw()
+        pygame.display.flip()
+        if game_manager.is_game_over():
+            menu.show_game_over(game_manager.get_final_score())
+            running = False
+
+    pygame.quit()
 
 if __name__ == "__main__":
     main()

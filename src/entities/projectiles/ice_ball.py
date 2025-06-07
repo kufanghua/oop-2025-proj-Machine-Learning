@@ -1,72 +1,19 @@
-"""
-冰球投射物類別
-具有冰凍效果的投射物
-"""
 import pygame
-from .base_projectile import BaseProjectile
-from ..utils.constants import PROJECTILE_CONFIG
+from src.entities.projectiles.base_projectile import BaseProjectile
 
 class IceBall(BaseProjectile):
-    """冰球投射物類別"""
-    
-    def __init__(self, start_pos, target_pos, damage=15):
-        super().__init__(start_pos, target_pos, damage, PROJECTILE_CONFIG['ice_ball']['speed'])
-        self.freeze_duration = PROJECTILE_CONFIG['ice_ball']['freeze_duration']
-        self.slow_factor = PROJECTILE_CONFIG['ice_ball']['slow_factor']
-        self.color = (173, 216, 230)  # 淺藍色
-        self.trail_particles = []
-        
-    def update(self, dt):
-        """更新冰球狀態"""
-        super().update(dt)
-        self._update_trail_effect(dt)
-        
-    def _update_trail_effect(self, dt):
-        """更新冰霜軌跡效果"""
-        # 添加新的軌跡粒子
-        if len(self.trail_particles) < 8:
-            particle = {
-                'pos': list(self.position),
-                'life': 0.3,
-                'max_life': 0.3
-            }
-            self.trail_particles.append(particle)
-        
-        # 更新軌跡粒子
-        for particle in self.trail_particles[:]:
-            particle['life'] -= dt
-            if particle['life'] <= 0:
-                self.trail_particles.remove(particle)
-    
-    def draw(self, screen):
-        """繪製冰球和軌跡效果"""
-        # 繪製軌跡
-        for particle in self.trail_particles:
-            alpha = int(255 * (particle['life'] / particle['max_life']))
-            color = (*self.color, alpha)
-            size = int(3 * (particle['life'] / particle['max_life']))
-            if size > 0:
-                try:
-                    pygame.draw.circle(screen, color[:3], 
-                                     (int(particle['pos'][0]), int(particle['pos'][1])), size)
-                except:
-                    pass
-        
-        # 繪製冰球本體
-        pygame.draw.circle(screen, self.color, 
-                         (int(self.position[0]), int(self.position[1])), 
-                         self.radius)
-        
-        # 繪製內核
-        inner_color = (135, 206, 250)  # 天空藍
-        pygame.draw.circle(screen, inner_color,
-                         (int(self.position[0]), int(self.position[1])),
-                         self.radius - 2)
-    
-    def on_hit(self, enemy):
-        """冰球命中敵人時的效果"""
-        # 造成傷害
+    cost = 20  # 可依需求調整
+
+    def __init__(self, x, y, target, damage, game_manager):
+        super().__init__(x, y, target, damage, game_manager)
+        self.image = pygame.Surface((16, 16), pygame.SRCALPHA)
+        pygame.draw.circle(self.image, (180, 220, 255), (8, 8), 8)
+        pygame.draw.circle(self.image, (100, 180, 255), (8, 8), 5)
+        self.slow_effect = 0.5  # 被擊中敵人減速比例
+        self.slow_time = 1.5    # 減速持續秒數
+
+    def hit(self, enemy):
         enemy.take_damage(self.damage)
-        # 施加冰凍效果
-        enemy.apply_freeze(self.freeze_duration, self.slow_factor)
-        return True
+        if hasattr(enemy, "slow"):
+            enemy.slow(self.slow_effect, self.slow_time)
+        self.kill()
