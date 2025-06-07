@@ -13,17 +13,17 @@ from src.utils.constants import TILE_SIZE, FPS
 
 def main():
     pygame.init()
-    # 先用小視窗建立 Menu 畫面
+    # 預設小視窗顯示主選單
     dummy_screen = pygame.display.set_mode((400, 300))
     menu = MainMenu(dummy_screen)
-    difficulty, map_size = menu.run()  # map_size 是 (rows, cols)
+    difficulty, map_size = menu.run()  # map_size = (rows, cols)
     rows, cols = map_size
 
-    # 根據地圖大小動態調整視窗大小
+    # 根據地圖格數動態設置視窗大小
     SCREEN_WIDTH = cols * TILE_SIZE
     SCREEN_HEIGHT = rows * TILE_SIZE
 
-    # 重新建立遊戲主視窗
+    # 以新尺寸重新建立遊戲主視窗
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pygame.display.set_caption("Tower Defense OOP Project")
     clock = pygame.time.Clock()
@@ -32,7 +32,7 @@ def main():
     game_manager = GameManager(screen, map_size=map_size, difficulty=difficulty)
     running = True
     while running:
-        dt = clock.tick(FPS) / 1000  # 秒
+        dt = clock.tick(FPS) / 1000  # 每幀秒數
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False

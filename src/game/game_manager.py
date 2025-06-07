@@ -8,16 +8,14 @@ from src.ui.game_ui import GameUI
 from src.utils.constants import INIT_MONEY, INIT_LIFE, BG_COLOR
 
 class GameManager:
-    def __init__(self, screen, map_size=None, difficulty=None):
+    def __init__(self, screen, map_size=(20, 30), difficulty=None):
         self.screen = screen
         self.entities = pygame.sprite.LayeredUpdates()
         self.towers = pygame.sprite.Group()
         self.enemies = pygame.sprite.Group()
         self.projectiles = pygame.sprite.Group()
-        self.map_size = map_size
-        self.difficulty = difficulty
         self.map_manager = MapManager(self, map_size=map_size, difficulty=difficulty)
-        self.wave_manager = WaveManager(self, difficulty=difficulty)
+        self.wave_manager = WaveManager(self)
         self.ui = GameUI(self)
         self.money = INIT_MONEY
         self.life = INIT_LIFE
@@ -57,23 +55,18 @@ class GameManager:
         self.entities.draw(self.screen)
         self.ui.draw(self.screen)
 
-        # 畫所有敵人（這裡會顯示血條和百分比）
         for enemy in self.enemies:
             enemy.draw(self.screen)
-        # 畫所有塔
         for tower in self.towers:
             tower.draw(self.screen)
-        # ...畫UI等其他畫面
 
     def check_collisions(self):
-        # 投射物擊中敵人
         for projectile in self.projectiles:
             hits = pygame.sprite.spritecollide(projectile, self.enemies, False)
             for enemy in hits:
                 projectile.on_hit(enemy)
-                if not projectile.piercing:
+                if not getattr(projectile, "piercing", False):
                     projectile.kill()
-        # 敵人到達終點
         for enemy in self.enemies:
             if self.map_manager.is_enemy_at_end(enemy):
                 self.life -= 1
