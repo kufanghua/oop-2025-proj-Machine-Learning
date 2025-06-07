@@ -11,7 +11,7 @@ class WaveManager:
         self.spawn_timer = 0
         self.enemies_to_spawn = []
         self.wave_in_progress = False
-        self.spawn_interval = 0.8  # seconds
+        self.spawn_interval = 0.5  # seconds
 
         # 根據難度調整每波怪物基數
         if difficulty == "easy":
