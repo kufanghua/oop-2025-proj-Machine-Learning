@@ -5,7 +5,7 @@ from src.utils.constants import FONT_NAME, FONT_SIZE, MAP_SIZE_EASY, MAP_SIZE_NO
 class MainMenu:
     def __init__(self, screen):
         self.screen = screen
-        self.font = pygame.font.SysFont(FONT_NAME, FONT_SIZE)
+        self.font = pygame.font.Font("assets/fonts/NotoSansTC-Black.ttf", FONT_SIZE)
         self.options = [
             (f"簡單 {MAP_SIZE_EASY}", "easy", MAP_SIZE_EASY),
             (f"普通 {MAP_SIZE_NORMAL}", "normal", MAP_SIZE_NORMAL),
@@ -45,7 +45,7 @@ class MainMenu:
     def show_game_over(self, score):
 
         self.screen.fill((30, 10, 10))
-        font_big = pygame.font.SysFont(FONT_NAME, FONT_SIZE + 10)
+        font_big = pygame.font.Font("assets/fonts/NotoSansTC-Black.ttf", FONT_SIZE+10)
         text1 = font_big.render("遊戲結束", True, (255, 80, 80))
         text2 = self.font.render(f"得分: {score}", True, (255, 255, 255))
         text3 = self.font.render("按任意鍵離開...", True, (180, 180, 180))

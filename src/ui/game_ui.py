@@ -13,7 +13,7 @@ TOWER_CLASSES = [
 class GameUI:
     def __init__(self, game_manager):
         self.game_manager = game_manager
-        self.font = pygame.font.SysFont(FONT_NAME, 22)
+        self.font = pygame.font.Font("assets/fonts/NotoSansTC-Black.ttf", 22)
         self.tower_buttons = []
         self.selected_idx = None
         self.selected_tower = None  # 記錄點擊地圖的塔
@@ -54,7 +54,7 @@ class GameUI:
         if not self.game_manager.selected_tower_type:
             tip = self.font.render("請先點選上方塔種再蓋塔", True, (200, 40, 40))
             # 以畫面寬度計算提示字串置中
-            surface.blit(tip, (surface.get_width()//2 - tip.get_width()//2, 9))
+            surface.blit(tip, (surface.get_width()//2 , 9))
 
         # --- 顯示攻擊範圍 ---
         if self.selected_tower:
