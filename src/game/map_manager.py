@@ -23,11 +23,11 @@ class MapManager:
 
             # 2. 往上到頂部
             col = self.cols // 2
-            for r in range(self.rows - 2, -1, -1):
+            for r in range(self.rows - 2, 0, -1):
                 path.append((r, col))
 
             # 3. 右轉到最右上角
-            row = 0
+            row = 1
             for col in range(self.cols // 2 + 1, self.cols):
                 path.append((row, col))
 
