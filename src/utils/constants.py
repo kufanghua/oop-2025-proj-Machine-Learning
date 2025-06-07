@@ -1,29 +1,20 @@
-# 遊戲全域常數
+# 格子大小（不變）
+TILE_SIZE = 24
 
-SCREEN_WIDTH = 720
-SCREEN_HEIGHT = 480
-FPS = 60
+# 以下常數僅作為 fallback 或參考，實際 SCREEN_WIDTH、SCREEN_HEIGHT 應於 main.py 依地圖大小自動計算
+# MAP_ROWS = 20
+# MAP_COLS = 30
+# SCREEN_WIDTH = MAP_COLS * TILE_SIZE
+# SCREEN_HEIGHT = MAP_ROWS * TILE_SIZE
 
-TILE_SIZE = 40
-MAP_ROWS = 10
-MAP_COLS = 16
-
+# 顏色設定
+BG_COLOR = (220, 220, 255)
+MAP_BG_COLOR = (230, 230, 230)
 FONT_NAME = "Microsoft JhengHei"
-BG_COLOR = (240, 240, 235)
-UI_BG_COLOR = (235, 230, 210)
-MAP_BG_COLOR = (230, 215, 180)
 
-INIT_MONEY = 120
-INIT_LIFE = 10
+# 遊戲初始金錢與生命
+INIT_MONEY = 200
+INIT_LIFE = 20
 
-# 地圖路徑 (row, col) 列表
-PATH_TILES = [
-    (4, 0), (4, 1), (4, 2), (4, 3), (4, 4), (4, 5), (4, 6), (5, 6),
-    (6, 6), (6, 7), (6, 8), (5, 8), (4, 8), (3, 8), (2, 8), (2, 9),
-    (2,10), (2,11), (3,11), (4,11), (5,11), (6,11), (7,11), (8,11), (8,12), (8,13), (8,14), (8,15)
-]
-
-# 可建塔格 (row, col) 列表
-TOWER_SPOTS = [
-    (3,2), (5,2), (2,6), (7,6), (1,9), (6,9), (5,13), (3,14), (7,14)
-]
+# 遊戲FPS（可依需求調整）
+FPS = 60

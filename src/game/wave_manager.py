@@ -5,14 +5,21 @@ from src.entities.enemies.fast_enemy import FastEnemy
 from src.entities.enemies.tank_enemy import TankEnemy
 
 class WaveManager:
-    def __init__(self, game_manager):
+    def __init__(self, game_manager, difficulty=None):
         self.game_manager = game_manager
         self.wave = 1
         self.spawn_timer = 0
         self.enemies_to_spawn = []
         self.wave_in_progress = False
         self.spawn_interval = 0.8  # seconds
-        self.enemies_per_wave = 5
+
+        # 根據難度調整每波怪物基數
+        if difficulty == "easy":
+            self.enemies_per_wave = 5
+        elif difficulty == "hard":
+            self.enemies_per_wave = 12
+        else:  # normal 或未指定
+            self.enemies_per_wave = 8
 
     def update(self, dt):
         if not self.wave_in_progress:

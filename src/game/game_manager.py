@@ -8,14 +8,16 @@ from src.ui.game_ui import GameUI
 from src.utils.constants import INIT_MONEY, INIT_LIFE, BG_COLOR
 
 class GameManager:
-    def __init__(self, screen):
+    def __init__(self, screen, map_size=None, difficulty=None):
         self.screen = screen
         self.entities = pygame.sprite.LayeredUpdates()
         self.towers = pygame.sprite.Group()
         self.enemies = pygame.sprite.Group()
         self.projectiles = pygame.sprite.Group()
-        self.map_manager = MapManager(self)
-        self.wave_manager = WaveManager(self)
+        self.map_size = map_size
+        self.difficulty = difficulty
+        self.map_manager = MapManager(self, map_size=map_size, difficulty=difficulty)
+        self.wave_manager = WaveManager(self, difficulty=difficulty)
         self.ui = GameUI(self)
         self.money = INIT_MONEY
         self.life = INIT_LIFE
