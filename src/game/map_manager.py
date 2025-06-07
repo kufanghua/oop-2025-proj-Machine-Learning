@@ -17,20 +17,25 @@ class MapManager:
         path = []
         if self.difficulty == "easy":
             # 兩個彎路徑
-            row, col = 0, 0
-            path.append((row, col))
-            # 向右
-            for c in range(1, self.cols // 2 + 1):
-                path.append((row, c))
-            # 向下
-            for r in range(1, self.rows // 2 + 1):
-                path.append((r, self.cols // 2))
-            # 向右
-            for c in range(self.cols // 2 + 1, self.cols):
-                path.append((self.rows // 2, c))
-            # 向下到終點
-            for r in range(self.rows // 2 + 1, self.rows):
-                path.append((r, self.cols - 1))
+            row = self.rows - 1
+            for col in range(0, self.cols // 2 + 1):
+                path.append((row, col))
+
+            # 2. 往上到頂部
+            col = self.cols // 2
+            for r in range(self.rows - 2, -1, -1):
+                path.append((r, col))
+
+            # 3. 右轉到最右上角
+            row = 0
+            for col in range(self.cols // 2 + 1, self.cols):
+                path.append((row, col))
+
+            # 4. 迴轉往下到最右下角（出口）
+            col = self.cols - 1
+            for r in range(1, self.rows):
+                path.append((r, col))
+
             return path
 
         elif self.difficulty == "normal":
