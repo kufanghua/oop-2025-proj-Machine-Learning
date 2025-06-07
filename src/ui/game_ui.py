@@ -45,10 +45,10 @@ class GameUI:
             else:
                 pygame.draw.rect(surface, (220, 220, 220), rect)
             pygame.draw.rect(surface, (60, 60, 90), rect, 2)
-            txt = pygame.font.SysFont(FONT_NAME, 18).render(label, True, (30, 30, 80))
+            txt = pygame.font.Font(FONT_NAME, 18).render(label, True, (30, 30, 80))
             surface.blit(txt, (rect.x + 3, rect.y + 8))
             price = getattr(tower_cls, "cost", 100)
-            price_txt = pygame.font.SysFont(FONT_NAME, 16).render(f"${price}", True, (80, 90, 20))
+            price_txt = pygame.font.Font(FONT_NAME, 16).render(f"${price}", True, (80, 90, 20))
             surface.blit(price_txt, (rect.x + 6, rect.y + 40))
 
         if not self.game_manager.selected_tower_type:
@@ -120,7 +120,7 @@ class GameUI:
             f"射速: {tower.attack_speed:.2f} 秒/發"
         ]
         for i, text in enumerate(info):
-            txt = pygame.font.SysFont(FONT_NAME, 18).render(text, True, (50, 50, 90))
+            txt = pygame.font.Font(FONT_NAME, 18).render(text, True, (50, 50, 90))
             surface.blit(txt, (panel_rect.x+18, panel_rect.y+50+i*27))
 
         if tower.can_upgrade():
