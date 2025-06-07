@@ -17,4 +17,9 @@ INIT_LIFE = 20
 FONT_NAME = "Arial"
 FONT_SIZE = 18
 
+# 地圖預設尺寸 (行數, 列數)
+MAP_SIZE_EASY = (10, 15)
+MAP_SIZE_NORMAL = (15, 20)
+MAP_SIZE_HARD = (20, 30)
+
 # 其他常數可依需求補充

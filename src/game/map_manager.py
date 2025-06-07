@@ -124,7 +124,7 @@ class MapManager:
         spots = []
         for row in range(self.rows):
             for col in range(self.cols):
-                if (row, col) not in self.path_tiles and (row + col) % 7 == 0:
+                if (row, col) not in self.path_tiles and (row + col) % 1 == 0:
                     spots.append((row, col))
         return spots
 
