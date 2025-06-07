@@ -1,80 +1,65 @@
 import pygame
-from src.utils.constants import FONT_NAME, BG_COLOR
+from src.utils.constants import FONT_NAME, FONT_SIZE
+from src.utils.constants import FONT_NAME, FONT_SIZE, MAP_SIZE_EASY, MAP_SIZE_NORMAL, MAP_SIZE_HARD
 
 class MainMenu:
     def __init__(self, screen):
         self.screen = screen
-        self.font = pygame.font.SysFont(FONT_NAME, 36)
-        self.small_font = pygame.font.SysFont(FONT_NAME, 28)
-        self.bg_color = BG_COLOR
-        # 難度、地圖大小選項
-        self.difficulties = ["easy", "normal", "hard"]
-        # 你可以根據遊戲需求自訂每個難度的預設地圖大小
-        self.map_sizes = {
-            "easy": (20, 30),
-            "normal": (24, 36),
-            "hard": (30, 45)
-        }
-        self.selected_index = 0
+        self.font = pygame.font.SysFont(FONT_NAME, FONT_SIZE)
+        self.options = [
+            (f"簡單 {MAP_SIZE_EASY}", "easy", MAP_SIZE_EASY),
+            (f"普通 {MAP_SIZE_NORMAL}", "normal", MAP_SIZE_NORMAL),
+            (f"困難 {MAP_SIZE_HARD}", "hard", MAP_SIZE_HARD),
+        ]
+        self.selected = 0
 
     def draw(self):
-        self.screen.fill(self.bg_color)
-        title = self.font.render("Tower Defense", True, (60, 60, 120))
-        self.screen.blit(title, (self.screen.get_width() // 2 - title.get_width() // 2, 40))
-
-        tip = self.small_font.render("請選擇難度（上下鍵切換，Enter確認）", True, (70, 70, 70))
-        self.screen.blit(tip, (self.screen.get_width() // 2 - tip.get_width() // 2, 110))
-
-        for idx, diff in enumerate(self.difficulties):
-            color = (40, 120, 40) if idx == self.selected_index else (120, 120, 120)
-            diff_text = f"{diff.upper()}  地圖:{self.map_sizes[diff][0]}x{self.map_sizes[diff][1]}"
-            surf = self.font.render(diff_text, True, color)
-            x = self.screen.get_width() // 2 - surf.get_width() // 2
-            y = 170 + idx * 60
-            self.screen.blit(surf, (x, y))
-
+        self.screen.fill((50, 50, 80))
+        title = self.font.render("塔防遊戲 - 難度選擇", True, (255, 255, 255))
+        self.screen.blit(title, (50, 30))
+        for i, (label, _, _) in enumerate(self.options):
+            color = (255, 255, 0) if i == self.selected else (200, 200, 200)
+            text = self.font.render(label, True, color)
+            self.screen.blit(text, (70, 80 + i * 40))
         pygame.display.flip()
 
     def run(self):
+        running = True
         clock = pygame.time.Clock()
-        selecting = True
-        while selecting:
+        while running:
+            self.draw()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
-                    raise SystemExit()
+                    exit()
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_UP:
-                        self.selected_index = (self.selected_index - 1) % len(self.difficulties)
+                        self.selected = (self.selected - 1) % len(self.options)
                     elif event.key == pygame.K_DOWN:
-                        self.selected_index = (self.selected_index + 1) % len(self.difficulties)
-                    elif event.key == pygame.K_RETURN or event.key == pygame.K_KP_ENTER:
-                        selecting = False
-            self.draw()
+                        self.selected = (self.selected + 1) % len(self.options)
+                    elif event.key == pygame.K_RETURN or event.key == pygame.K_SPACE:
+                        _, difficulty, map_size = self.options[self.selected]
+                        return difficulty, map_size
             clock.tick(30)
-        diff = self.difficulties[self.selected_index]
-        return diff, self.map_sizes[diff]
 
     def show_game_over(self, score):
-        clock = pygame.time.Clock()
-        font = pygame.font.SysFont(FONT_NAME, 48)
-        small_font = pygame.font.SysFont(FONT_NAME, 28)
-        over_text = font.render("GAME OVER", True, (200, 40, 40))
-        score_text = small_font.render(f"最終分數: {score}", True, (40, 40, 40))
-        restart_text = small_font.render("按任意鍵退出...", True, (60, 60, 60))
-
-        self.screen.fill((255, 230, 230))
-        self.screen.blit(over_text, (self.screen.get_width() // 2 - over_text.get_width() // 2, 110))
-        self.screen.blit(score_text, (self.screen.get_width() // 2 - score_text.get_width() // 2, 200))
-        self.screen.blit(restart_text, (self.screen.get_width() // 2 - restart_text.get_width() // 2, 260))
+        self.screen.fill((30, 10, 10))
+        font_big = pygame.font.SysFont(FONT_NAME, FONT_SIZE + 10)
+        text1 = font_big.render("遊戲結束", True, (255, 80, 80))
+        text2 = self.font.render(f"得分: {score}", True, (255, 255, 255))
+        text3 = self.font.render("按任意鍵離開...", True, (180, 180, 180))
+        self.screen.blit(text1, (60, 60))
+        self.screen.blit(text2, (70, 130))
+        self.screen.blit(text3, (50, 180))
         pygame.display.flip()
-
         waiting = True
         while waiting:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
-                    raise SystemExit()
+                    exit()
                 elif event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN:
-                    waiting = False
-            clock.tick(15)
+                    waiting = False 
+                    import pygame
+                    from src.utils.constants import FONT_NAME, FONT_SIZE
+

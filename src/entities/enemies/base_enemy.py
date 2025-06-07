@@ -1,7 +1,6 @@
 import pygame
 from src.entities.base_entity import BaseEntity
-
-TILE_SIZE = 40  # 若有 constants.py，請改用 from src.utils.constants import TILE_SIZE
+from src.utils.constants import TILE_SIZE  # 改為引入專案的 TILE_SIZE
 
 class BaseEnemy(BaseEntity):
     name = "BaseEnemy"

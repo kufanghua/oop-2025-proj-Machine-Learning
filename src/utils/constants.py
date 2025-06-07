@@ -1,20 +1,25 @@
-# 格子大小（不變）
-TILE_SIZE = 24
+# 顏色常數
+BG_COLOR = (40, 40, 40)
+MAP_BG_COLOR = (66, 66, 66)
+UI_BG_COLOR = (33, 33, 33)
 
-# 以下常數僅作為 fallback 或參考，實際 SCREEN_WIDTH、SCREEN_HEIGHT 應於 main.py 依地圖大小自動計算
-# MAP_ROWS = 20
-# MAP_COLS = 30
-# SCREEN_WIDTH = MAP_COLS * TILE_SIZE
-# SCREEN_HEIGHT = MAP_ROWS * TILE_SIZE
+# 格子大小 (像素)
+TILE_SIZE = 32
 
-# 顏色設定
-BG_COLOR = (220, 220, 255)
-MAP_BG_COLOR = (230, 230, 230)
-FONT_NAME = "Microsoft JhengHei"
+# 遊戲速度
+FPS = 60
 
-# 遊戲初始金錢與生命
-INIT_MONEY = 200
+# 遊戲初始參數
+INIT_MONEY = 500
 INIT_LIFE = 20
 
-# 遊戲FPS（可依需求調整）
-FPS = 60
+# 字型
+FONT_NAME = "Arial"
+FONT_SIZE = 18
+
+# 地圖預設尺寸 (行數, 列數)
+MAP_SIZE_EASY = (10, 15)
+MAP_SIZE_NORMAL = (15, 20)
+MAP_SIZE_HARD = (20, 30)
+
+# 其他常數可依需求補充

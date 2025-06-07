@@ -1,5 +1,5 @@
 import pygame
-from src.utils.constants import FONT_NAME, SCREEN_WIDTH, SCREEN_HEIGHT, UI_BG_COLOR
+from src.utils.constants import FONT_NAME, UI_BG_COLOR
 from src.entities.towers.cannon_tower import CannonTower
 from src.entities.towers.machine_tower import MachineTower
 from src.entities.towers.freeze_tower import FreezeTower
@@ -16,7 +16,7 @@ class GameUI:
         self.font = pygame.font.SysFont(FONT_NAME, 22)
         self.tower_buttons = []
         self.selected_idx = None
-        self.selected_tower = None  # 新增：記錄點擊地圖的塔
+        self.selected_tower = None  # 記錄點擊地圖的塔
         self._init_tower_buttons()
 
     def _init_tower_buttons(self):
@@ -28,7 +28,10 @@ class GameUI:
         pass
 
     def draw(self, surface):
-        pygame.draw.rect(surface, UI_BG_COLOR, (0, 0, SCREEN_WIDTH, 40))
+        # 動態取得畫面寬度
+        width = surface.get_width()
+        # 畫上方 UI 區塊背景
+        pygame.draw.rect(surface, UI_BG_COLOR, (0, 0, width, 40))
         money_txt = self.font.render(f"金錢: {self.game_manager.money}", True, (0, 80, 0))
         life_txt = self.font.render(f"生命: {self.game_manager.life}", True, (180, 0, 0))
         score_txt = self.font.render(f"分數: {self.game_manager.score}", True, (0, 0, 180))
@@ -50,7 +53,8 @@ class GameUI:
 
         if not self.game_manager.selected_tower_type:
             tip = self.font.render("請先點選上方塔種再蓋塔", True, (200, 40, 40))
-            surface.blit(tip, (SCREEN_WIDTH//2 - tip.get_width()//2, 9))
+            # 以畫面寬度計算提示字串置中
+            surface.blit(tip, (surface.get_width()//2 - tip.get_width()//2, 9))
 
         # --- 顯示攻擊範圍 ---
         if self.selected_tower:
@@ -73,14 +77,14 @@ class GameUI:
                     return True
             # 點擊升級按鈕
             if self.selected_tower:
-                upg_rect = pygame.Rect(SCREEN_WIDTH-230+40, 60+100, 140, 30)
+                surface = self.game_manager.screen
+                width = surface.get_width()
+                upg_rect = pygame.Rect(width-230+40, 60+100, 140, 30)
                 if upg_rect.collidepoint(pos) and self.selected_tower.can_upgrade():
                     if self.selected_tower.upgrade():
-                        # 升級成功後可加音效等
-                        pass
+                        pass  # 升級成功後可加音效等
                     else:
-                        # 金錢不足等提示
-                        pass
+                        pass  # 金錢不足等提示
                     return True  # 事件已處理
             self.selected_tower = None
         elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 3:
@@ -92,7 +96,8 @@ class GameUI:
         pass
 
     def draw_upgrade_panel(self, surface, tower):
-        panel_rect = pygame.Rect(SCREEN_WIDTH-230, 60, 220, 140)
+        width = surface.get_width()
+        panel_rect = pygame.Rect(width-230, 60, 220, 140)
         pygame.draw.rect(surface, (250, 245, 220), panel_rect)
         pygame.draw.rect(surface, (80, 70, 60), panel_rect, 2)
         title = self.font.render("塔升級", True, (60, 50, 50))
@@ -120,14 +125,9 @@ class GameUI:
 
     def draw_tower_range(self, surface, tower):
         # 畫出攻擊範圍圓圈
-        # 假設 tower.x, tower.y 是中心座標，tower.range 是半徑
-        # 若 tower.rect 是 pygame.Rect，可用中心 tower.rect.center
         color = (0, 160, 255, 60)  # 半透明藍
-        # 處理 alpha: 建立一個臨時 surface
         temp_surface = pygame.Surface((tower.range*2, tower.range*2), pygame.SRCALPHA)
         pygame.draw.circle(temp_surface, color, (tower.range, tower.range), tower.range)
-        # rect.center 為中心座標
         cx, cy = tower.rect.center if hasattr(tower, "rect") else (tower.x, tower.y)
         surface.blit(temp_surface, (cx - tower.range, cy - tower.range))
-        # 外框（可選）
         pygame.draw.circle(surface, (0, 120, 220), (cx, cy), tower.range, 2)
