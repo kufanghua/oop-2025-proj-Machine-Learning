@@ -14,7 +14,7 @@ INIT_MONEY = 500
 INIT_LIFE = 20
 
 # 字型
-FONT_NAME = "assets/fonts/NotoSansCJKtc-Regular.otf"  # 或你自己的中文字型檔案路徑
+FONT_NAME = "assets/fonts/NotoSansTC-Black.ttf"  # 或你自己的中文字型檔案路徑
 FONT_SIZE = 22
 UI_BG_COLOR = (235, 225, 205)  # 你的UI顏色
 TILE_SIZE = 48  # 依照你的專案實際設定
