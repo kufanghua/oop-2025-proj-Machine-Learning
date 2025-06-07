@@ -43,6 +43,7 @@ class MainMenu:
             clock.tick(30)
 
     def show_game_over(self, score):
+
         self.screen.fill((30, 10, 10))
         font_big = pygame.font.SysFont(FONT_NAME, FONT_SIZE + 10)
         text1 = font_big.render("遊戲結束", True, (255, 80, 80))
@@ -60,6 +61,6 @@ class MainMenu:
                     exit()
                 elif event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN:
                     waiting = False 
-                    import pygame
-                    from src.utils.constants import FONT_NAME, FONT_SIZE
+
+                    
 

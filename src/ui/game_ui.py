@@ -75,17 +75,28 @@ class GameUI:
                     self.selected_tower = tower
                     self.game_manager.selected_tower_type = None
                     return True
-            # 點擊升級按鈕
+            # 點擊升級或刪除按鈕
             if self.selected_tower:
                 surface = self.game_manager.screen
                 width = surface.get_width()
                 upg_rect = pygame.Rect(width-230+40, 60+100, 140, 30)
+                del_rect = pygame.Rect(width-230+40, 60+140, 140, 30)
                 if upg_rect.collidepoint(pos) and self.selected_tower.can_upgrade():
                     if self.selected_tower.upgrade():
-                        pass  # 升級成功後可加音效等
+                        pass
                     else:
-                        pass  # 金錢不足等提示
-                    return True  # 事件已處理
+                        pass
+                    return True
+                # 刪除塔
+                if del_rect.collidepoint(pos):
+                    tower = self.selected_tower
+                    refund = int(tower.cost * 0.75)
+                    self.game_manager.money += refund
+                    self.game_manager.towers.remove(tower)
+                    self.game_manager.entities.remove(tower)
+                    self.selected_tower = None
+                    # 可加入刪除音效或提示
+                    return True
             self.selected_tower = None
         elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 3:
             self.selected_tower = None
@@ -97,7 +108,7 @@ class GameUI:
 
     def draw_upgrade_panel(self, surface, tower):
         width = surface.get_width()
-        panel_rect = pygame.Rect(width-230, 60, 220, 140)
+        panel_rect = pygame.Rect(width-230, 60, 220, 180)  # 高度+40
         pygame.draw.rect(surface, (250, 245, 220), panel_rect)
         pygame.draw.rect(surface, (80, 70, 60), panel_rect, 2)
         title = self.font.render("塔升級", True, (60, 50, 50))
@@ -122,6 +133,14 @@ class GameUI:
         else:
             txt = self.font.render("已達最高等級", True, (180, 60, 60))
             surface.blit(txt, (panel_rect.x+42, panel_rect.y+100))
+
+        # 新增刪除塔按鈕
+        refund = int(tower.cost * 0.75)
+        delete_btn = pygame.Rect(panel_rect.x+40, panel_rect.y+140, 140, 30)
+        pygame.draw.rect(surface, (220, 60, 60), delete_btn)
+        pygame.draw.rect(surface, (180, 40, 40), delete_btn, 2)
+        del_txt = self.font.render(f"拆除塔 (+${refund})", True, (255, 255, 255))
+        surface.blit(del_txt, (delete_btn.x+10, delete_btn.y+4))
 
     def draw_tower_range(self, surface, tower):
         # 畫出攻擊範圍圓圈
