@@ -20,7 +20,7 @@ UI_BG_COLOR = (235, 225, 205)  # 你的UI顏色
 TILE_SIZE = 48  # 依照你的專案實際設定
 
 # 地圖預設尺寸 (行數, 列數)
-MAP_SIZE_EASY = (10, 15)
+MAP_SIZE_EASY = (15, 20)
 MAP_SIZE_NORMAL = (15, 20)
 MAP_SIZE_HARD = (20, 30)
 
