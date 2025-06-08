@@ -79,8 +79,8 @@ class GameUI:
             if self.selected_tower:
                 surface = self.game_manager.screen
                 width = surface.get_width()
-                upg_rect = pygame.Rect(width-230+40, 60+100, 140, 30)
-                del_rect = pygame.Rect(width-230+40, 60+140, 140, 30)
+                upg_rect = pygame.Rect(width-230+40, 60+130, 110, 30)
+                del_rect = pygame.Rect(width-230+40, 60+165, 110, 30)
                 if upg_rect.collidepoint(pos) and self.selected_tower.can_upgrade():
                     if self.selected_tower.upgrade():
                         pass
@@ -132,7 +132,7 @@ class GameUI:
             surface.blit(btn_txt, (upgrade_btn.x+10, upgrade_btn.y+4))
         else:
             txt = self.font.render("已達最高等級", True, (180, 60, 60))
-            surface.blit(txt, (panel_rect.x+42, panel_rect.y+100))
+            surface.blit(txt, (panel_rect.x+42, panel_rect.y+130))
 
         # 新增刪除塔按鈕
         refund = int(tower.cost * 0.75)
