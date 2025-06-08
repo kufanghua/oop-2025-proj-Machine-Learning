@@ -2,14 +2,15 @@ import pygame
 from src.entities.projectiles.base_projectile import BaseProjectile
 
 class CannonBall(BaseProjectile):
-    speed = 180
+    speed = 120
     piercing = False
     splash_radius = 32
 
     def __init__(self, x, y, target, damage, game_manager):
-        image = pygame.Surface((18, 18), pygame.SRCALPHA)
-        pygame.draw.circle(image, (180, 120, 80), (9, 9), 9)
         super().__init__(x, y, target, damage, game_manager)
+        image = pygame.Surface((16, 16), pygame.SRCALPHA)
+        pygame.draw.circle(self.image, (255, 0, 0), (8, 8), 8)
+        
 
     def on_hit(self, target):
         # 範圍傷害
