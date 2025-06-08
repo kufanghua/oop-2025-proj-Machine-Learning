@@ -10,6 +10,7 @@ import pygame
 from src.game.game_manager import GameManager
 from src.ui.menu import MainMenu
 from src.utils.constants import TILE_SIZE, FPS
+from src.utils.audio_manager import AudioManager 
 
 def main():
     pygame.init()
