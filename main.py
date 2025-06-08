@@ -16,7 +16,7 @@ def main():
     pygame.init()
     pygame.mixer.init() 
     # 預設小視窗顯示主選單
-    dummy_screen = pygame.display.set_mode((400, 300))
+    dummy_screen = pygame.display.set_mode((800, 600))
     menu = MainMenu(dummy_screen)
     difficulty, map_size = menu.run()  # map_size = (rows, cols)
     rows, cols = map_size
