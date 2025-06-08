@@ -5,12 +5,12 @@ from src.entities.projectiles.cannon_ball import CannonBall
 
 class CannonTower(BaseTower):
     name = "Cannon Tower"
-    cost = 100
+    cost = 200
     range = 120
     attack_speed = 1.5
     damage = 30
     max_level = 5
-    upgrade_cost_base = 50
+    upgrade_cost_base = 100
     upgrade_damage = 15
     upgrade_attack_speed = 0.1
     '''
