@@ -5,7 +5,7 @@ import os
 
 class FreezeTower(BaseTower):
     name = "Freeze Tower"
-    cost = 120
+    cost = 240
     range = 90
     attack_speed = 2.0
     damage = 5
