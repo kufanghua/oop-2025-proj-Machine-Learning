@@ -53,12 +53,11 @@ class GameManager:
         self.screen.fill(BG_COLOR)
         self.map_manager.draw(self.screen)
         self.entities.draw(self.screen)
-        self.ui.draw(self.screen)
-
         for enemy in self.enemies:
             enemy.draw(self.screen)
         for tower in self.towers:
             tower.draw(self.screen)
+        self.ui.draw(self.screen)
 
     def check_collisions(self):
         for projectile in self.projectiles:
