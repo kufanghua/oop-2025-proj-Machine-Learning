@@ -4,8 +4,8 @@ from src.entities.enemies.base_enemy import BaseEnemy
 
 class BasicEnemy(BaseEnemy):
     name = "Basic Enemy"
-    speed = 60
-    hp_default = 30
+    base_speed = 60      # 覆寫父類
+    base_hp = 30         # 覆寫父類
     reward = 10
 
     def __init__(self, start_tile, game_manager):

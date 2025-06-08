@@ -4,8 +4,8 @@ from src.entities.enemies.base_enemy import BaseEnemy
 
 class FastEnemy(BaseEnemy):
     name = "Fast Enemy"
-    speed = 110
-    hp_default = 20
+    base_speed = 110
+    base_hp = 20
     reward = 12
 
     def __init__(self, start_tile, game_manager):

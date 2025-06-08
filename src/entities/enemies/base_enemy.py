@@ -4,11 +4,21 @@ from src.utils.constants import TILE_SIZE  # 改為引入專案的 TILE_SIZE
 
 class BaseEnemy(BaseEntity):
     name = "BaseEnemy"
-    speed = 60  # pix/sec
-    hp_default = 30
+    base_speed = 60  # pix/sec
+    base_hp = 30
     reward = 10
 
     def __init__(self, start_tile, game_manager):
+        difficulty = getattr(game_manager, "difficulty", "normal")
+        if difficulty == "easy":
+            self.speed = self.base_speed * 0.8
+            self.hp_default = int(self.base_hp * 0.8)
+        elif difficulty == "hard":
+            self.speed = self.base_speed * 1.2
+            self.hp_default = int(self.base_hp * 1.5)
+        else:  # normal
+            self.speed = self.base_speed
+            self.hp_default = self.base_hp
         x = start_tile[1] * TILE_SIZE + TILE_SIZE // 2
         y = start_tile[0] * TILE_SIZE + TILE_SIZE // 2
         image = pygame.Surface((TILE_SIZE - 6, TILE_SIZE - 6), pygame.SRCALPHA)
@@ -34,6 +44,7 @@ class BaseEnemy(BaseEntity):
         else:
             move_speed = self.speed
         '''
+        print(f"Enemy speed: {self.speed}")
         if self.slow_timer > 0:
             move_speed = self.speed * self.slow_ratio
             self.slow_timer -= dt

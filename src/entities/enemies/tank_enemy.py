@@ -5,8 +5,8 @@ from src.entities.enemies.base_enemy import BaseEnemy
 
 class TankEnemy(BaseEnemy):
     name = "Tank Enemy"
-    speed = 35
-    hp_default = 90
+    base_speed = 35
+    base_hp = 90
     reward = 22
 
     def __init__(self, start_tile, game_manager):
