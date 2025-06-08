@@ -12,7 +12,9 @@ class MapManager:
         self.grid = [[0 for _ in range(self.cols)] for _ in range(self.rows)]
         self.path_tiles = self.generate_path_tiles()
         self.tower_spots = self.generate_tower_spots()
-
+        spot_img_path = os.path.join("assets", "images", "map", "tower_spot.png")
+        self.tower_spot_img = pygame.image.load(spot_img_path).convert_alpha()
+        self.tower_spot_img = pygame.transform.scale(self.tower_spot_img, (TILE_SIZE, TILE_SIZE))
     def generate_path_tiles(self):
         path = []
         if self.difficulty == "easy":
@@ -147,9 +149,11 @@ class MapManager:
                 (col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE)
             )
         for (row, col) in self.tower_spots:
-            pygame.draw.rect(
-                surface, (100, 200, 100),
-                (col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE)
+            #pygame.draw.rect(
+             #   surface, (100, 200, 100),
+            surface.blit(
+                self.tower_spot_img,
+                (col * TILE_SIZE, row * TILE_SIZE)#, TILE_SIZE, TILE_SIZE)
             )
         # 畫城堡
         if self.path_tiles:
