@@ -18,39 +18,81 @@ class MapManager:
     def generate_path_tiles(self):
         path = []
         if self.difficulty == "easy":
-            row = self.rows - 1
-            for col in range(0, self.cols // 2 + 1):
+            #右
+            row = self.rows //2
+            for col in range(0, self.cols // 4 + 1):
                 path.append((row, col))
-            col = self.cols // 2
-            for r in range(self.rows - 2, 0, -1):
+            #上
+            col = self.cols // 4
+            for r in range(self.rows //2, 2, -1):
                 path.append((r, col))
-            row = 1
-            for col in range(self.cols // 2 + 1, self.cols):
+            #右
+            row = 2
+            for col in range(self.cols // 4 , self.cols//2-1):
                 path.append((row, col))
-            col = self.cols - 1
-            for r in range(1, self.rows):
+            #下
+            col = self.cols//2-1
+            for r in range(2, self.rows-2):
                 path.append((r, col))
+            #右
+            row = self.rows-2
+            for col in range(self.cols//2-1 , (self.cols // 4)*3-1):
+                path.append((row, col))
+            #上
+            col = (self.cols // 4)*3-1
+            for r in range(self.rows-2, self.rows//2, -1):
+                path.append((r, col))
+            #右
+            row = self.rows//2
+            for col in range((self.cols // 4)*3-1 , self.cols):
+                path.append((row, col))
             return path
 
         elif self.difficulty == "normal":
-            row, col = 0, 0
-            path.append((row, col))
-            for c in range(1, self.cols // 4 + 1):
-                path.append((row, c))
-            for r in range(1, self.rows // 3 + 1):
-                path.append((r, self.cols // 4))
-            for c in range(self.cols // 4 - 1, self.cols // 3 - 1, -1):
-                path.append((self.rows // 3, c))
-            for r in range(self.rows // 3 + 1, 2 * self.rows // 3 + 1):
-                path.append((r, self.cols // 3))
-            for c in range(self.cols // 3 + 1, 2 * self.cols // 3 + 1):
-                path.append((2 * self.rows // 3, c))
-            for r in range(2 * self.rows // 3 + 1, self.rows - 1):
-                col_pos = 2 * self.cols // 3
-                path.append((r, col_pos))
-                if (r - 2 * self.rows // 3) % 2 == 1 and col_pos - 1 >= 0:
-                    path.append((r, col_pos - 1))
-            path.append((self.rows - 1, self.cols - 1))
+            #右
+            row = self.rows //2
+            for col in range(0, self.cols // 4 -1):
+                path.append((row, col))
+            #下
+            col = self.cols // 4 -1
+            for r in range(self.rows //2, self.rows-1):
+                path.append((r, col))
+            #上
+            col = self.cols // 4 
+            for r in range(self.rows-2, 3, -1):
+                path.append((r, col))
+            #右
+            row = 3
+            for col in range(self.cols // 4 , self.cols // 2):
+                path.append((row, col))
+            #下
+            col = self.cols // 2
+            for r in range(3, self.rows//2 + 1):
+                path.append((r, col))
+            #左
+            row = self.rows//2 + 1
+            for col in range(self.cols //2 , self.cols // 4+2,-1):
+                path.append((row, col))
+            #下
+            col = self.cols // 4+2
+            for r in range(self.rows//2 + 1, self.rows-2):
+                path.append((r, col))
+            #右
+            row = self.rows-2
+            for col in range(self.cols // 4+2, self.cols//4*3-1):
+                path.append((row, col))
+            #上
+            col = self.cols//4*3-1
+            for r in range(self.rows-2, self.rows//3, -1):
+                path.append((r, col))
+            #右
+            row = self.rows//3
+            for col in range(self.cols//4*3-1, self.cols):
+                path.append((row, col))
+            #下
+            col = self.cols-1
+            for r in range(self.rows//3, self.rows):
+                path.append((r, col))
             return path
 
         elif self.difficulty == "hard":
