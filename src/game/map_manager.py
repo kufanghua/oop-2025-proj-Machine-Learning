@@ -97,46 +97,92 @@ class MapManager:
 
         elif self.difficulty == "hard":
             path = []
-            r, c = 0, 0
-            path.append((r, c))
-            for ci in range(1, self.cols // 5 + 1):
-                path.append((r, ci))
-            for ri in range(1, self.rows // 4 + 1):
-                path.append((ri, self.cols // 5))
-            for ci in range(self.cols // 5 - 1, self.cols // 3 - 1, -1):
-                path.append((self.rows // 4, ci))
-            for ri in range(self.rows // 4 + 1, 2 * self.rows // 5 + 1):
-                path.append((ri, self.cols // 3))
-            for ci in range(self.cols // 3 + 1, 2 * self.cols // 3 + 1):
-                path.append((2 * self.rows // 5, ci))
-            direction = 1
-            for ri in range(2 * self.rows // 5 + 1, 3 * self.rows // 5 + 1):
-                col_start = 2 * self.cols // 3 if direction == 1 else 2 * self.cols // 3 - 3
-                col_end = 2 * self.cols // 3 - 3 if direction == 1 else 2 * self.cols // 3
-                step = 1 if direction == 1 else -1
-                for ci in range(col_start, col_end + step, step):
-                    if 0 <= ci < self.cols:
-                        path.append((ri, ci))
-                direction *= -1
-            for ri in range(3 * self.rows // 5 + 1, 3 * self.rows // 4 + 1):
-                col_pos = 2 * self.cols // 3 - 3
-                if 0 <= col_pos < self.cols:
-                    path.append((ri, col_pos))
-            direction = 1
-            for ri in range(3 * self.rows // 4 + 1, self.rows - 1):
-                col_start = 2 * self.cols // 3 - 3 if direction == 1 else 2 * self.cols // 3
-                col_end = 2 * self.cols // 3 if direction == 1 else 2 * self.cols // 3 - 3
-                step = 1 if direction == 1 else -1
-                for ci in range(col_start, col_end + step, step):
-                    if 0 <= ci < self.cols:
-                        path.append((ri, ci))
-                direction *= -1
-            path.append((self.rows - 1, self.cols - 1))
+            #下
+            col = 0
+            for r in range(0, self.rows//2):
+                path.append((r, col))
+            #右
+            row = self.rows//2
+            for col in range(0, self.cols // 4-1):
+                path.append((row, col))
+            #上
+            col = self.cols // 4-2
+            for r in range(self.rows//2, 2, -1):
+                path.append((r, col))
+            #右
+            row = 2
+            for col in range(self.cols // 4-2, self.cols // 4+1):
+                path.append((row, col))
+            #下
+            col = self.cols // 4+1
+            for r in range(2, self.rows//4*3+-1):
+                path.append((r, col))
+            #左
+            row = self.rows//4*3-1
+            for col in range(self.cols // 4+1,1,-1):
+                path.append((row, col))
+            #下
+            col = 1
+            for r in range(self.rows//4*3+-1, self.rows-1):
+                path.append((r, col))
+            #右
+            row = self.rows-1
+            for col in range(1, self.cols -1):
+                path.append((row, col))
+            #上
+            col = self.cols -1
+            for r in range(self.rows-1, 1, -1):
+                path.append((r, col))
+            #左
+            row = 1
+            for col in range(self.cols-1,self.cols//3+1,-1):
+                path.append((row, col))
+            #下
+            col = self.cols//3+1
+            for r in range(1, self.rows-3):
+                path.append((r, col))
+            #右
+            row = self.rows-3
+            for col in range(self.cols//3+1, self.cols -3):
+                path.append((row, col))
+            #上
+            col = self.cols -3
+            for r in range(self.rows-3, 3, -1):
+                path.append((r, col))
+            #左
+            row = 3
+            for col in range(self.cols-3,self.cols//3+2,-1):
+                path.append((row, col))
+            #下
+            col = self.cols//3+2
+            for r in range(3, self.rows-4):
+                path.append((r, col))
+            #右
+            row = self.rows-4
+            for col in range(self.cols//3+2, self.cols -5):
+                path.append((row, col))
+            
+            #上
+            col = self.cols -5
+            for r in range(self.rows-4, 5, -1):
+                path.append((r, col))
+            #左
+            row = 5
+            for col in range(self.cols-5,self.cols//2-1,-1):
+                path.append((row, col))
+            #下
+            col = self.cols//2-1
+            for r in range(5, self.rows-6):
+                path.append((r, col))
+            #右
+            row = self.rows-6
+            for col in range(self.cols//2-1, self.cols//3*2 ):
+                path.append((row, col))
+             #上
+            col = self.cols//3*2
+            for r in range(self.rows-6, self.rows//2-2, -1):
+                path.append((r, col))
             return path
-
-        for row in range(self.rows):
-            path.append((row, self.cols // 2))
-        return path
 
     def generate_tower_spots(self):
         spots = []
