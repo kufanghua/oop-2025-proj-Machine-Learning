@@ -4,7 +4,7 @@ from src.entities.projectiles.bullet import Bullet
 import os
 class MachineTower(BaseTower):
     name = "Machine Tower"
-    cost = 80
+    cost = 160
     range = 90
     attack_speed = 0.5
     damage = 8
