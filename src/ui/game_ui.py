@@ -13,7 +13,7 @@ TOWER_CLASSES = [
 class GameUI:
     def __init__(self, game_manager):
         self.game_manager = game_manager
-        self.font = pygame.font.Font("assets/fonts/NotoSansTC-Black.ttf", 22)
+        self.font = pygame.font.Font("assets/fonts/NotoSansTC-Black.ttf", 16)
         self.tower_buttons = []
         self.selected_idx = None
         self.selected_tower = None  # 記錄點擊地圖的塔
@@ -45,7 +45,7 @@ class GameUI:
             else:
                 pygame.draw.rect(surface, (220, 220, 220), rect)
             pygame.draw.rect(surface, (60, 60, 90), rect, 2)
-            txt = pygame.font.Font(FONT_NAME, 18).render(label, True, (30, 30, 80))
+            txt = pygame.font.Font(FONT_NAME, 16).render(label, True, (30, 30, 80))
             surface.blit(txt, (rect.x + 3, rect.y + 8))
             price = getattr(tower_cls, "cost", 100)
             price_txt = pygame.font.Font(FONT_NAME, 16).render(f"${price}", True, (80, 90, 20))
@@ -108,7 +108,7 @@ class GameUI:
 
     def draw_upgrade_panel(self, surface, tower):
         width = surface.get_width()
-        panel_rect = pygame.Rect(width-230, 60, 220, 180)  # 高度+40
+        panel_rect = pygame.Rect(width-230, 60, 180, 200)  # 高度+40
         pygame.draw.rect(surface, (250, 245, 220), panel_rect)
         pygame.draw.rect(surface, (80, 70, 60), panel_rect, 2)
         title = self.font.render("塔升級", True, (60, 50, 50))
@@ -120,15 +120,15 @@ class GameUI:
             f"射速: {tower.attack_speed:.2f} 秒/發"
         ]
         for i, text in enumerate(info):
-            txt = pygame.font.Font(FONT_NAME, 18).render(text, True, (50, 50, 90))
+            txt = pygame.font.Font(FONT_NAME, 16).render(text, True, (50, 50, 90))
             surface.blit(txt, (panel_rect.x+18, panel_rect.y+50+i*27))
 
         if tower.can_upgrade():
-            upgrade_btn = pygame.Rect(panel_rect.x+40, panel_rect.y+100, 140, 30)
+            upgrade_btn = pygame.Rect(panel_rect.x+40, panel_rect.y+130, 110, 30)
             pygame.draw.rect(surface, (100, 180, 90), upgrade_btn)
             pygame.draw.rect(surface, (60, 90, 50), upgrade_btn, 2)
             cost = tower.upgrade_cost()
-            btn_txt = self.font.render(f"升級 (${cost})", True, (20, 40, 20))
+            btn_txt = self.font.render(f"升級 (-${cost})", True, (20, 40, 20))
             surface.blit(btn_txt, (upgrade_btn.x+16, upgrade_btn.y+4))
         else:
             txt = self.font.render("已達最高等級", True, (180, 60, 60))
@@ -136,10 +136,10 @@ class GameUI:
 
         # 新增刪除塔按鈕
         refund = int(tower.cost * 0.75)
-        delete_btn = pygame.Rect(panel_rect.x+40, panel_rect.y+140, 140, 30)
+        delete_btn = pygame.Rect(panel_rect.x+40, panel_rect.y+165, 110, 30)
         pygame.draw.rect(surface, (220, 60, 60), delete_btn)
         pygame.draw.rect(surface, (180, 40, 40), delete_btn, 2)
-        del_txt = self.font.render(f"拆除塔 (+${refund})", True, (255, 255, 255))
+        del_txt = self.font.render(f"拆除 (+${refund})", True, (255, 255, 255))
         surface.blit(del_txt, (delete_btn.x+10, delete_btn.y+4))
 
     def draw_tower_range(self, surface, tower):
