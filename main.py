@@ -10,9 +10,11 @@ import pygame
 from src.game.game_manager import GameManager
 from src.ui.menu import MainMenu
 from src.utils.constants import TILE_SIZE, FPS
+from src.utils.audio_manager import AudioManager 
 
 def main():
     pygame.init()
+    pygame.mixer.init() 
     # 預設小視窗顯示主選單
     dummy_screen = pygame.display.set_mode((400, 300))
     menu = MainMenu(dummy_screen)
@@ -27,9 +29,10 @@ def main():
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pygame.display.set_caption("Tower Defense OOP Project")
     clock = pygame.time.Clock()
-
+    
+    audio_manager = AudioManager()
     # 遊戲主迴圈
-    game_manager = GameManager(screen, map_size=map_size, difficulty=difficulty)
+    game_manager = GameManager(screen, map_size=map_size, difficulty=difficulty, audio_manager=audio_manager)
     running = True
     while running:
         dt = clock.tick(FPS) / 1000  # 每幀秒數

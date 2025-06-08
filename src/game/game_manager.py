@@ -8,8 +8,9 @@ from src.ui.game_ui import GameUI
 from src.utils.constants import INIT_MONEY, INIT_LIFE, BG_COLOR
 
 class GameManager:
-    def __init__(self, screen, map_size=(20, 30), difficulty=None):
+    def __init__(self, screen, map_size=(20, 30), difficulty=None, audio_manager=None):
         self.screen = screen
+        self.audio_manager = audio_manager
         self.entities = pygame.sprite.LayeredUpdates()
         self.towers = pygame.sprite.Group()
         self.enemies = pygame.sprite.Group()
@@ -74,6 +75,7 @@ class GameManager:
     def add_tower(self, tower: BaseTower):
         self.towers.add(tower)
         self.entities.add(tower)
+        self.audio_manager.play("tower_build")
 
     def add_enemy(self, enemy: BaseEnemy):
         self.enemies.add(enemy)

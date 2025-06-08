@@ -48,6 +48,7 @@ class FreezeTower(BaseTower):
     def shoot(self, target):
         ice_ball = IceBall(self.x, self.y, target, self.damage, self.game_manager)
         self.game_manager.add_projectile(ice_ball)
+        self.game_manager.audio_manager.play("shoot_freeze")
     '''
     def __init__(self, x, y, game_manager):
         image = pygame.Surface((36, 36), pygame.SRCALPHA)

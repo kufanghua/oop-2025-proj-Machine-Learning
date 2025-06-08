@@ -54,3 +54,4 @@ class CannonTower(BaseTower):
     def shoot(self, target):
         ball = CannonBall(self.x, self.y, target, self.damage, self.game_manager)
         self.game_manager.add_projectile(ball)
+        self.game_manager.audio_manager.play("shoot_cannon")

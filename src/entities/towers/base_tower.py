@@ -55,6 +55,7 @@ class BaseTower(BaseEntity):
             self.level += 1
             self.damage += self.upgrade_damage
             self.attack_speed = max(0.1, self.attack_speed - self.upgrade_attack_speed)
+            self.game_manager.audio_manager.play("upgrade")
             # 可增加升級動畫或音效
             return True
         return False

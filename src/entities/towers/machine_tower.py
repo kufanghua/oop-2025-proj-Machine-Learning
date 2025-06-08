@@ -53,3 +53,4 @@ class MachineTower(BaseTower):
     def shoot(self, target):
         bullet = Bullet(self.x, self.y, target, self.damage, self.game_manager)
         self.game_manager.add_projectile(bullet)
+        self.game_manager.audio_manager.play("shoot_machine")

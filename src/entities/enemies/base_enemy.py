@@ -23,13 +23,25 @@ class BaseEnemy(BaseEntity):
         self.path = list(game_manager.map_manager.path_tiles) if hasattr(game_manager, "map_manager") else []
         self.target_idx = 0
         self.slow_timer = 0
+        self.slow_ratio = 1.0  # 初始化
+
 
     def update(self, dt):
+        '''
         if self.slow_timer > 0:
             move_speed = self.speed * 0.4
             self.slow_timer -= dt
         else:
             move_speed = self.speed
+        '''
+        if self.slow_timer > 0:
+            move_speed = self.speed * self.slow_ratio
+            self.slow_timer -= dt
+            if self.slow_timer <= 0:
+                self.slow_ratio = 1.0  # 恢復正常速度
+        else:
+            move_speed = self.speed
+            
         if self.target_idx >= len(self.path):
             return
         target_tile = self.path[self.target_idx]
@@ -72,10 +84,22 @@ class BaseEnemy(BaseEntity):
     def take_damage(self, dmg):
         super().take_damage(dmg)
         if self.hp <= 0 and hasattr(self.game_manager, "earn_money"):
+            if hasattr(self.game_manager, "audio_manager"):
+                self.game_manager.audio_manager.play("enemy_die")
             self.game_manager.earn_money(self.reward)
             self.game_manager.add_score(self.reward)
-
+    '''
     def slow(self, t):
+        self.slow_timer = max(self.slow_timer, t)
+    '''
+    # base_enemy.py
+    def slow(self, slow_ratio, t):
+        '''
+        self.slow_ratio = min(self.slow_ratio, slow_ratio) if hasattr(self, "slow_ratio")  else slow_ratio
+        self.slow_timer = max(self.slow_timer, t)
+        '''
+        print(f"slow called! ratio={slow_ratio} t={t}")
+        self.slow_ratio = min(self.slow_ratio, slow_ratio)
         self.slow_timer = max(self.slow_timer, t)
 
     def get_map_grid_pos(self):
