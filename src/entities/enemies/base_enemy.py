@@ -44,7 +44,6 @@ class BaseEnemy(BaseEntity):
         else:
             move_speed = self.speed
         '''
-        print(f"Enemy speed: {self.speed}")
         if self.slow_timer > 0:
             move_speed = self.speed * self.slow_ratio
             self.slow_timer -= dt
