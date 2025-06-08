@@ -12,8 +12,10 @@ class IceBall(BaseProjectile):
         self.slow_effect = 0.5  # 被擊中敵人減速比例
         self.slow_time = 1.5    # 減速持續秒數
 
-    def hit(self, enemy):
+    def on_hit(self, enemy):
+
         enemy.take_damage(self.damage)
         if hasattr(enemy, "slow"):
             enemy.slow(self.slow_effect, self.slow_time)
         self.kill()
+        

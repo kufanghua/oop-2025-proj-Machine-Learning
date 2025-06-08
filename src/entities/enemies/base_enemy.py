@@ -88,17 +88,10 @@ class BaseEnemy(BaseEntity):
                 self.game_manager.audio_manager.play("enemy_die")
             self.game_manager.earn_money(self.reward)
             self.game_manager.add_score(self.reward)
-    '''
-    def slow(self, t):
-        self.slow_timer = max(self.slow_timer, t)
-    '''
+    
     # base_enemy.py
     def slow(self, slow_ratio, t):
-        '''
-        self.slow_ratio = min(self.slow_ratio, slow_ratio) if hasattr(self, "slow_ratio")  else slow_ratio
-        self.slow_timer = max(self.slow_timer, t)
-        '''
-        print(f"slow called! ratio={slow_ratio} t={t}")
+
         self.slow_ratio = min(self.slow_ratio, slow_ratio)
         self.slow_timer = max(self.slow_timer, t)
 
