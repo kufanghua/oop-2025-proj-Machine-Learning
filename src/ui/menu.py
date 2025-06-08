@@ -33,7 +33,7 @@ class MainMenu:
             if rect.collidepoint(mouse_pos):
                 color = (50, 180, 255)
                 text = self.font.render(label, True, color)
-            # 若是目前選中的，維持黃色
+
             self.screen.blit(text, rect)
             self.option_rects.append(rect)
         pygame.display.flip()
@@ -62,9 +62,9 @@ class MainMenu:
         text1 = font_big.render("遊戲結束", True, (255, 80, 80))
         text2 = self.font.render(f"得分: {score}", True, (255, 255, 255))
         text3 = self.font.render("按任意鍵離開...", True, (180, 180, 180))
-        self.screen.blit(text1, (60, 60))
-        self.screen.blit(text2, (70, 130))
-        self.screen.blit(text3, (50, 180))
+        self.screen.blit(text1, (350, 100))
+        self.screen.blit(text2, (400, 200))
+        self.screen.blit(text3, (320, 300))
         pygame.display.flip()
         waiting = True
         while waiting:

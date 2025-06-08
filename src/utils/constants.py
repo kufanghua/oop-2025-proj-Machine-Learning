@@ -11,7 +11,7 @@ FPS = 60
 
 # 遊戲初始參數
 INIT_MONEY = 500
-INIT_LIFE = 20
+INIT_LIFE = 1
 
 # 字型
 FONT_NAME = "assets/fonts/NotoSansTC-Black.ttf"  # 或你自己的中文字型檔案路徑

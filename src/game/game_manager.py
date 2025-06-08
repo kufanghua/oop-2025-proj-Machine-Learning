@@ -15,6 +15,7 @@ class GameManager:
         self.towers = pygame.sprite.Group()
         self.enemies = pygame.sprite.Group()
         self.projectiles = pygame.sprite.Group()
+        self.difficulty = difficulty
         self.map_manager = MapManager(self, map_size=map_size, difficulty=difficulty)
         self.wave_manager = WaveManager(self)
         self.ui = GameUI(self)
