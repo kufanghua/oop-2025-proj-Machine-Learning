@@ -21,8 +21,8 @@ class MainMenu:
         title = self.font.render("難度選擇", True, (255, 255, 255))
         self.screen.blit(title, (300, 100))
         font_name = pygame.font.Font("assets/fonts/NotoSansTC-Black.ttf", TILE_SIZE-20)
-        text1 = font_name.render("by葉哲 張政洋 古芳華", True, (255, 255, 255))
-        self.screen.blit(text1, (500, 550))
+        text1 = font_name.render("by12組 葉哲 張政洋 古芳華", True, (255, 255, 255))
+        self.screen.blit(text1, (450, 550))
         self.option_rects = []
         mouse_pos = pygame.mouse.get_pos()
         for i, (label, _, _) in enumerate(self.options):
