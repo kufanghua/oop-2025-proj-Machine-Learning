@@ -3,6 +3,10 @@
 這個專案是一款以 Python 物件導向程式設計（OOP）實作的塔防遊戲。遊戲中玩家可於地圖上建造多種防禦塔，阻擋並消滅持續來襲的敵人。專案包含金錢與升級系統、分數結算、豐富的 UI 介面與音效，支援多種敵人與投射物型態，並具備主選單、遊戲結束畫面等完整流程。
 
 ---
+## Contribution 
+- @yezh0915 : 45% (code, UI design )
+- @fiesta0217 : 27.5% ( image, sound )
+- @kufanghua : 27.5% ( Project ideation ( README ), presentation )
 
 ## 📁 專案目錄結構
 
