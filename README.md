@@ -4,9 +4,9 @@
 
 ---
 ## Contribution 
-- @yezh0915 : 45% (code, UI design )
-- @fiesta0217 : 27.5% ( image, sound )
-- @kufanghua : 27.5% ( Project ideation ( README ), presentation )
+- @yezh0915 (113511093) : 45% (code, UI design )
+- @fiesta0217 (113511257) : 27.5% ( image, sound )
+- @kufanghua (113511250) : 27.5% ( Project ideation ( README ), presentation )
 
 ## 📁 專案目錄結構
 
