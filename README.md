@@ -111,7 +111,3 @@ python -m unittest discover tests
 - ![遊戲畫面2](screenshots/gameplay2.png)
 - ![遊戲 Demo](screenshots/demo.gif)
 ---
-## Contribution 
-- @yezh0915 : 45% (code, UI design )
-- @fiesta0217 : 27.5% ( image, sound )
-- @kufanghua : 27.5% ( Project ideation ( README ), presentation )
